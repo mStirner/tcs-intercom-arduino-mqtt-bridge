@@ -30,6 +30,9 @@ SERIALS="1D2CC541,0D2CC580"
 
 Make sure your arudino bridge is attached via USB, when you start the node.js application.
 
+## Schematics
+![voltage-divider](./docs/schematics.png)
+
 
 ## Todos
 - Audio capture
