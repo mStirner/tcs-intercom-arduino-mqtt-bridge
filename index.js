@@ -11,8 +11,16 @@ console.log(`Started v${pkg.version}...`);
 const { error, parsed } = dotenv.config();
 
 if (error) {
-    console.error(err);
-    process.exit(1);
+    if (error.code === "ENOENT") {
+
+        console.log("No .env file found");
+
+    } else {
+
+        console.error(error);
+        process.exit(1);
+
+    }
 }
 
 const {
@@ -22,15 +30,14 @@ const {
     MQTT_PORT,
     MQTT_TOPIC,
     SERIALS
-} = Object.assign(process.env, {
+} = process.env = Object.assign({
     SERIAL_PORT: "/dev/ttyACM0",
     SERIAL_BAUD: "9600",
     MQTT_HOST: "127.0.0.1",
     MQTT_PORT: "1883",
     MQTT_TOPIC: "doorman",
     SERIALS: ""
-}, process.env, parsed);
-
+}, parsed, process.env);
 
 
 const client = mqtt.connect({
