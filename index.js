@@ -29,14 +29,16 @@ const {
     MQTT_HOST,
     MQTT_PORT,
     MQTT_TOPIC,
-    SERIALS
+    SERIALS,
+    GOTIFY_INTEGRATION
 } = process.env = Object.assign({
     SERIAL_PORT: "/dev/ttyACM0",
     SERIAL_BAUD: "9600",
     MQTT_HOST: "127.0.0.1",
     MQTT_PORT: "1883",
     MQTT_TOPIC: "doorman",
-    SERIALS: ""
+    SERIALS: "",
+    GOTIFY_INTEGRATION: "true"
 }, parsed, process.env);
 
 
@@ -62,12 +64,43 @@ const pipeline = port.pipe(parser);
 pipeline.on("data", (data) => {
 
     // log everything on the tcs bus
-    console.log(dateformat(Date.now(), "yyyy.mm.dd - HH:MM.ss.l"), data);
+    let time = dateformat(Date.now(), "yyyy.mm.dd - HH:MM.ss.l");
+    console.log(time, data);
 
     // notify only on our own serial number
     if (SERIALS.split(",").includes(data)) {
+
         console.log("Klingel betätigt!");
-        client.publish(MQTT_TOPIC, `Klingel betätigt! (${data})`);
+
+        if (GOTIFY_INTEGRATION === "true") {
+
+            // gotify notification, publish json
+            // with some extra fields
+            // https://gotify.net/docs/msgextras#androidaction
+            let payload = JSON.stringify({
+                priority: 5,
+                title: "Türklingel betätigt!",
+                message: `${time} - ${data}`,
+                /*
+                extras: {
+                    "android::action": {
+                        onReceive: {
+                            intentUrl: "https://gotify.net"
+                        }
+                    }
+                }
+                */
+            });
+
+            client.publish(MQTT_TOPIC, payload);
+
+        } else {
+
+            // no gotify, just publish on mqtt topic
+            client.publish(MQTT_TOPIC, `Klingel betätigt! (${data}): ${time}`);
+
+        }
+
     }
 
 });
