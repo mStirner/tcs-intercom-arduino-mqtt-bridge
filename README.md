@@ -7,14 +7,15 @@ This can then be used, for example with [gotify](https://gotify.net/), to send n
 
 
 ## Environment variables
-| Name        | Default value  | Required | Description                                                              |
-| ----------- | -------------- | -------- | ------------------------------------------------------------------------ |
-| SERIAL_PORT | `/dev/ttyACM0` |          | Arudino Serial Port                                                      |
-| SERIAL_BAUD | `9600`         |          | configred baud rate for the serial port                                  |
-| MQTT_HOST   | `27017`        |          | MQTT Host                                                                |
-| MQTT_PORT   | `OpenHaus`     |          | MQTT Port                                                                |
-| MQTT_TOPIC  | `doorman`      |          | MQTT Topic                                                               |
-| SERIALS     |                |          | Comma seperated list, when to notfiy via mqtt. E.g.: `1D2CC541,0D2CC580` |
+| Name               | Default value  | Required | Description                                                              |
+| ------------------ | -------------- | -------- | ------------------------------------------------------------------------ |
+| SERIAL_PORT        | `/dev/ttyACM0` |          | Arudino Serial Port                                                      |
+| SERIAL_BAUD        | `9600`         |          | configred baud rate for the serial port                                  |
+| MQTT_HOST          | `27017`        |          | MQTT Host                                                                |
+| MQTT_PORT          | `OpenHaus`     |          | MQTT Port                                                                |
+| MQTT_TOPIC         | `doorman`      |          | MQTT Topic                                                               |
+| SERIALS            |                |          | Comma seperated list, when to notfiy via mqtt. E.g.: `1D2CC541,0D2CC580` |
+| GOTIFY_INTEGRATION |                |          | Sets gotify specify values/json data, if set to `true`                   |
 
 You can also create a `.env` file. E.g:
 ```ini
